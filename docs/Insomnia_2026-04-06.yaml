@@ -1,0 +1,425 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Upload Produtos Imagens
+meta:
+  id: wrk_15c3d9ad085846a8900ae1e6c0790abd
+  created: 1771873264169
+  modified: 1772453380946
+  description: ""
+collection:
+  - name: Produtos
+    meta:
+      id: fld_4acc225d04a1474e945423267ce55872
+      created: 1772453390237
+      modified: 1776097682835
+      sortKey: -1772453390237
+      description: ""
+    children:
+      - url: localhost:8080/produtos/5
+        name: Delete Produto
+        meta:
+          id: req_0e4fcaab92364e9984d6d455142c24b5
+          created: 1772476981240
+          modified: 1775478587535
+          isPrivate: false
+          description: ""
+          sortKey: -1772476983139
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/produtos/10
+        name: Update Produto
+        meta:
+          id: req_1a2bf9edca194f429d583c17329f5163
+          created: 1772476987450
+          modified: 1775478940525
+          isPrivate: false
+          description: ""
+          sortKey: -1772476987450
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nomeProduto": "Super Tablet"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/produtos
+        name: Insert Produto
+        meta:
+          id: req_82526e424bcd40018d21d8f0b73f10fb
+          created: 1772476989351
+          modified: 1775475508376
+          isPrivate: false
+          description: ""
+          sortKey: -1772476989351
+        method: POST
+        body:
+          mimeType: multipart/form-data
+          params:
+            - name: image
+              value: ""
+              description: ""
+              disabled: false
+              fileName: C:\Users\49019215841\Desktop\246247-800-800.png
+              type: file
+            - name: nomeProduto
+              value: Tablet da Fernanda
+              description: ""
+              disabled: false
+            - name: valor
+              value: "1000"
+              description: ""
+              disabled: false
+              multiline: false
+              type: text
+            - name: idCategoria
+              value: "1"
+              description: ""
+              disabled: false
+        headers:
+          - name: Content-Type
+            value: multipart/form-data
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/produtos
+        name: Select Produto
+        meta:
+          id: req_9b7ff5979681411092f41ed04b6a2437
+          created: 1772476991719
+          modified: 1775477740444
+          isPrivate: false
+          description: ""
+          sortKey: -1772476991719
+        method: GET
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"id": 10
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Categoria
+    meta:
+      id: fld_a5cea7f2c5c44f20b6cb60fb12fa349a
+      created: 1772453395427
+      modified: 1776097790425
+      sortKey: -1772453395427
+      description: ""
+    children:
+      - url: localhost:8080/categorias
+        name: Select Categoria
+        meta:
+          id: req_9d5a7e174ba94bfdaf26a8ad5e18f4e0
+          created: 1772473276760
+          modified: 1774891765338
+          isPrivate: false
+          description: ""
+          sortKey: -1772473283349
+        method: GET
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/categorias
+        name: Insert Categoria
+        meta:
+          id: req_e72959437ae547c2bf7c4efc4cc9ca49
+          created: 1772473279779
+          modified: 1774888926754
+          isPrivate: false
+          description: ""
+          sortKey: -1772473282435.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"nome": "Eletrodomésticos",
+            	"descricao" : "Aparelhos elétricos ou mecânicos projetados para facilitar tarefas domésticas, usados no dia a dia residencial."
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/categorias
+        name: Update Categoria
+        meta:
+          id: req_7eb0ad96c495461ea06c70f4d04fb3b4
+          created: 1772473281522
+          modified: 1774893997287
+          isPrivate: false
+          description: ""
+          sortKey: -1772473281522
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome" : "Eletroeletrônico",
+            	"descricao": "Eletrons eletrons poggers"
+            }
+        parameters:
+          - name: id
+            value: "1"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/categorias/2
+        name: Delete Categoria
+        meta:
+          id: req_b0dde3714b254eee951ca5ba00c2d55f
+          created: 1772473283249
+          modified: 1774893531452
+          isPrivate: false
+          description: ""
+          sortKey: -1772473279679
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.3.1
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Clientes
+    meta:
+      id: fld_943201d1fa1848bd965f2ba69fd51e30
+      created: 1776097688322
+      modified: 1776097783107
+      sortKey: -1776097688322
+      description: ""
+    children:
+      - url: localhost:8080/clientes
+        name: Get Cliente
+        meta:
+          id: req_dea0751457224dee98246ac73a096a9c
+          created: 1776097690796
+          modified: 1776099269016
+          isPrivate: false
+          description: ""
+          sortKey: -1776097768898
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/clientes
+        name: Insert Cliente
+        meta:
+          id: req_e6de5b2e27cd43d2a901db7eba4aed21
+          created: 1776097706671
+          modified: 1776097893591
+          isPrivate: false
+          description: ""
+          sortKey: -1776097768798
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+              "nomeCliente": "Lucas",
+              "sobrenomeCliente": "Silva Sauro",
+              "cpf": "090.635.768-38",
+              "email": "lucas.sauro@email.com",
+              "numeroTelefone": "(11) 98765-4321",
+              "tipoTelefone": "movel",
+              "cep": "01001-000",
+              "numeroEndereco": "100",
+              "complemento": "Apt 42"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/clientes
+        name: Update Cliente
+        meta:
+          id: req_dee52824eba94cbd80584d3772579cca
+          created: 1776097723955
+          modified: 1776099267391
+          isPrivate: false
+          description: ""
+          sortKey: -1776097768648
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"nome": "José",
+            	"sobrenome": "Ferreira dos Santos",
+            	"cpf": "12345678900",
+            	"email": "abdulah5122@uorak.com"
+            }
+        parameters:
+          - name: id
+            value: "2"
+            description: ""
+            disabled: false
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: localhost:8080/clientes/2
+        name: Delete Cliente
+        meta:
+          id: req_1cc2e17323064737a692a7b23a169ac2
+          created: 1776097730292
+          modified: 1776099255434
+          isPrivate: false
+          description: ""
+          sortKey: -1776097768598
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/12.5.0
+            description: ""
+            disabled: false
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_b4782362393d74fa296b9af7ce8f6fc8bc25b103
+    created: 1772453380982
+    modified: 1772453380982
+environments:
+  name: Base Environment
+  meta:
+    id: env_b4782362393d74fa296b9af7ce8f6fc8bc25b103
+    created: 1771873264176
+    modified: 1772453380943
+    isPrivate: false
