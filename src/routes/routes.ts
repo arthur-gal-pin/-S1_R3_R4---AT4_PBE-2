@@ -6,7 +6,6 @@ import clienteRoutes from './clienteRoutes';
 import telefoneRoutes from './telefoneRoutes';
 import enderecoRoutes from './enderecoRoutes';
 import {pedidoRoutes} from './pedidoRoutes';
-import { itemRoutes } from './pedidoRoutes';
 
 routes.use('/categorias', categoriaRoutes);
 routes.use('/produtos', produtoRoutes);

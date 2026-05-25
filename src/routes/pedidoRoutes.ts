@@ -9,10 +9,10 @@ pedidoRoutes.post('/', pedidoController.criar);
 pedidoRoutes.put('/:id', pedidoController.atualizarStatus);
 pedidoRoutes.delete('/:id', pedidoController.excluir);
 
-itemRoutes.get('/', itemController.listar);
-itemRoutes.post('/', itemController.criar);
-itemRoutes.put('/:id', itemController.atualizar);
-itemRoutes.delete('/:id', itemController.excluir);
+itemRoutes.get('/', pedidoController.listar);
+itemRoutes.post('/', pedidoController.criar);
+itemRoutes.put('/:id', pedidoController.atualizarAdicao);
+itemRoutes.delete('/:id', pedidoController.atualizarRemocao);
 
 
 export {pedidoRoutes, itemRoutes};

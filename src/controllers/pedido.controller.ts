@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
 import { Pedidos } from "../models/Pedidos";
 import { ItensPedido } from "../models/Itens_Pedido";
-import { pedidoRepository } from "../repositories/pedidoRepository";
+import pedidoRepository from "../repositories/pedidoRepository";
 import { statusPedido } from "../enum/statusPedido";
 
 const pedidoController = {
+    // 1. CRIAR PEDIDO
     criar: async (Req: Request, Res: Response) => {
         try {
             const { IdCliente, itens } = Req.body;
@@ -44,16 +45,24 @@ const pedidoController = {
             });
         }
     },
+
+    // 2. LISTAR PEDIDOS
     listar: async (Req: Request, Res: Response) => {
         try {
             const { idCliente, idPedido } = Req.query;
-            if (isNaN(Number(idCliente)) && idCliente !== undefined || Number(idCliente) <= 0) {
-                return Res.status(400).json({ message: 'Você deve inserir um numero maior do que zero para o IdCliente.' })
-            } else if (isNaN(Number(idPedido)) && idPedido !== undefined || Number(idPedido) <= 0) {
-                return Res.status(400).json({ message: 'Você deve inserir um numero maior que zero para o IdPedido.' })
+            
+            // Validação simples de query params
+            const parsedIdCliente = idCliente ? Number(idCliente) : undefined;
+            const parsedIdPedido = idPedido ? Number(idPedido) : undefined;
+
+            if (idCliente && (isNaN(Number(idCliente)) || Number(idCliente) <= 0)) {
+                return Res.status(400).json({ message: 'ID do cliente inválido.' });
+            }
+            if (idPedido && (isNaN(Number(idPedido)) || Number(idPedido) <= 0)) {
+                return Res.status(400).json({ message: 'ID do pedido inválido.' });
             }
 
-            const result = await pedidoRepository.read(Number(idCliente), Number(idPedido));
+            const result = await pedidoRepository.read(parsedIdCliente, parsedIdPedido);
 
             if (result.length === 0) {
                 return Res.status(200).json({ message: 'Nenhum registro encontrado.', data: [] });
@@ -64,22 +73,33 @@ const pedidoController = {
             return Res.status(500).json({ message: 'Erro ao listar pedidos.', error: error.message });
         }
     },
+
+    // 3. ATUALIZAR STATUS
     atualizarStatus: async (Req: Request, Res: Response) => {
         try {
             const id = Number(Req.params.id);
-            const status = (Req.query.status) as string;
-            if (isNaN(id) || id <= 0 || id === undefined) {
-                return Res.status(400).json({ message: 'Você deve inserir um numero maior que zero para o IdPedido.' });
+            const status = Req.query.status as string;
+
+            if (isNaN(id) || id <= 0) {
+                return Res.status(400).json({ message: 'ID do pedido inválido.' });
             }
             if (!Object.values(statusPedido).includes(status as any)) {
                 return Res.status(400).json({ message: `Status inválido. Valores permitidos: ${Object.values(statusPedido)}` });
             }
+
             const result = await pedidoRepository.updateStatus(status as statusPedido, id);
-            return Res.status(200).json({ message: 'Requisição bem sucedida', data: result });
+            
+            if (!result) {
+                return Res.status(404).json({ message: 'Pedido não encontrado para atualizar status.' });
+            }
+
+            return Res.status(200).json({ message: 'Status atualizado com sucesso.' });
         } catch (error: any) {
-            return Res.status(500).json({ message: 'Erro ao atualizar pedidos.', error: error.message });
+            return Res.status(500).json({ message: 'Erro ao atualizar status.', error: error.message });
         }
     },
+
+    // 4. REMOVER ITEM DE UM PEDIDO EXISTENTE
     atualizarRemocao: async (Req: Request, Res: Response) => {
         try {
             const idItem = Number(Req.params.idItem);
@@ -88,7 +108,8 @@ const pedidoController = {
                 return Res.status(400).json({ message: 'ID do item inválido.' });
             }
 
-            const itemParaRemover = await itensRepository.findById(idItem); // Assume-se que este método existe no seu itensRepository
+            // Busca o item para saber o valor a ser subtraído e o ID do pedido pai
+            const itemParaRemover = await pedidoRepository.itemId(idItem);
 
             if (!itemParaRemover) {
                 return Res.status(404).json({ message: 'Item não encontrado.' });
@@ -106,7 +127,7 @@ const pedidoController = {
 
             const pedidoAtualizado = Pedidos.editar({
                 clienteId: pedidoAnterior.fk_IdCliente,
-                subTotal: novoSubTotal < 0 ? 0 : novoSubTotal, // Garante que não fique negativo
+                subTotal: novoSubTotal < 0 ? 0 : novoSubTotal,
                 status: pedidoAnterior.Status
             }, itemParaRemover.pedidoId);
 
@@ -119,12 +140,11 @@ const pedidoController = {
 
         } catch (error: any) {
             console.error(error);
-            return Res.status(500).json({
-                message: 'Erro ao remover item do pedido.',
-                error: error.message
-            });
+            return Res.status(500).json({ message: 'Erro ao remover item.', error: error.message });
         }
     },
+
+    // 5. ADICIONAR ITEM A UM PEDIDO EXISTENTE
     atualizarAdicao: async (Req: Request, Res: Response) => {
         try {
             const { item } = Req.body;
@@ -150,7 +170,7 @@ const pedidoController = {
                 clienteId: pedidoAnterior.fk_IdCliente,
                 subTotal: novoSubTotal,
                 status: pedidoAnterior.Status
-            }, Number(item.pedidoId));
+            }, itemAdicao.pedidoId);
 
             const resultPedido = await pedidoRepository.updateAdicao(itemAdicao.pedidoId, pedidoAtualizado, itemAdicao);
 
@@ -161,33 +181,31 @@ const pedidoController = {
 
         } catch (error: any) {
             console.error(error);
-            return Res.status(500).json({
-                message: 'Erro ao adicionar item ao pedido.',
-                error: error.message
-            });
+            return Res.status(500).json({ message: 'Erro ao adicionar item.', error: error.message });
         }
-    }
-    ,
+    },
+
+    // 6. EXCLUIR PEDIDO COMPLETO
     excluir: async (Req: Request, Res: Response) => {
         try {
             const id = Number(Req.params.id);
 
-            if (isNaN(id) || id <= 0 || id === undefined) {
-                return Res.status(400).json({ message: 'Você deve inserir um numero maior que zero para o IdPedido.' });
+            if (isNaN(id) || id <= 0) {
+                return Res.status(400).json({ message: 'ID do pedido inválido.' });
             }
+
             const result = await pedidoRepository.delete(id);
 
-            if (result) {
+            if (!result) {
                 return Res.status(404).json({ message: 'Pedido não encontrado para exclusão.' });
             }
 
-            return Res.status(200).json({ message: 'Requisição bem sucedida', Colunas_Afetadas: result });
+            return Res.status(200).json({ message: 'Pedido e itens excluídos com sucesso.' });
 
         } catch (error: any) {
-            return Res.status(500).json({ message: 'Erro ao excluir pedidos.', error: error.message });
+            return Res.status(500).json({ message: 'Erro ao excluir pedido.', error: error.message });
         }
     },
-
 };
 
 export default pedidoController;

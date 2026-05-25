@@ -60,6 +60,21 @@ const categoriaController = {
             console.error(error);
             res.status(500).json({ message: 'Ocorreu um erro no servidor.', error: error.message })
         }
+    },
+    listarTodos: async (res: Response) => {
+        try {
+            const result = await categoriaRepository.readAll();
+
+            if (result.length === 0) {
+                return res.status(200).json({
+                    message: `Não há nenhuma categoria no banco de dados.`,
+                    data: result
+                });
+            }
+        } catch (error: any) {
+            console.error(error);
+            res.status(500).json({ message: 'Ocorreu um erro no servidor.', error: error.message })
+        }
     }
 }
 

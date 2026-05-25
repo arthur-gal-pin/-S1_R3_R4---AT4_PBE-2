@@ -55,7 +55,7 @@ const pedidoRepository = {
 
     // 3. ATUALIZAR STATUS
     updateStatus: async (Status: statusPedido, IdPedido: number): Promise<boolean> => {
-        const sql = 'UPDATE pedidos SET Status = ?, DataMod = NOW() WHERE IdPedido = ?';
+        const sql = 'UPDATE pedidos SET Status = ? WHERE IdPedido = ?';
         const [rows] = await connection.execute<ResultSetHeader>(sql, [Status, IdPedido]);
         return rows.affectedRows > 0;
     },
@@ -93,7 +93,7 @@ const pedidoRepository = {
             await conn.execute(sqlItm, [IdPedido, item.produtoId, item.quantidade, item.valor]);
 
             // Atualiza o subtotal do pedido
-            const sqlUpdatePedido = 'UPDATE pedidos SET SubTotal = ?, DataMod = NOW() WHERE IdPedido = ?';
+            const sqlUpdatePedido = 'UPDATE pedidos SET SubTotal = ? WHERE IdPedido = ?';
             await conn.execute(sqlUpdatePedido, [pedidoAtualizado.subTotal, IdPedido]);
 
             await conn.commit();
@@ -142,4 +142,4 @@ const pedidoRepository = {
     }
 };
 
-export { pedidoRepository };
+export default pedidoRepository ;
